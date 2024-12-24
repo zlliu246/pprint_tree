@@ -22,6 +22,18 @@ def pprint_tree(root: Node) -> None:
     Args:
         root (Node): root node of tree we want to print
     """
+    seed: int = 200
+    for i in range(20):
+        try:
+            try_pprint_tree(root, seed=seed)
+            return
+        except:
+            seed *= 2
+
+def try_pprint_tree(root: Node, seed=200) -> None:
+    """
+    attempt to pprint_tree. might raise error. if error, retry with larger seed
+    """
     # get list[list[Node]] for easier printing
     node_levels: list[list[Node]] = assign_parent_and_get_node_levels(root)
 
@@ -32,16 +44,16 @@ def pprint_tree(root: Node) -> None:
     lines_to_print: list[str] = []
     
     # create underscore line for root node
-    lines_to_print.append(get_underscore_line_for_root_node(root))
+    lines_to_print.append(get_underscore_line_for_root_node(root, seed=seed))
 
     for node_level in node_levels:
 
         # get pipe line
-        pipe_line: str = get_pipe_line(node_level)
+        pipe_line: str = get_pipe_line(node_level, seed=seed)
         lines_to_print.append(pipe_line)
 
         # get underscore line
-        underscore_line: str = get_underscore_line(node_level, pipe_line)
+        underscore_line: str = get_underscore_line(node_level, pipe_line, seed=seed)
         lines_to_print.append(underscore_line)
 
     # remove unnecessary columns

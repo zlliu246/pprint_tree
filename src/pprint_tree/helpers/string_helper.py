@@ -16,18 +16,19 @@ def get_underscore_component(node: Node) -> str:
         return str(node.val).center(node.wideness_score)
     return str(node.val).center(node.wideness_score, "_") 
 
-def get_underscore_line_for_root_node(root: Node):
+def get_underscore_line_for_root_node(root: Node, seed: int):
     """
     Gets underscore line just for root node. Start with lots of spaces on the left
     """
     root_str: str = get_underscore_component(root)
-    root.left_index = 200
-    root.right_index = 200 + len(root_str) - 1
-    return " " * 200 + root_str
+    root.left_index = seed
+    root.right_index = seed + len(root_str) - 1
+    return " " * seed + root_str
 
 def get_underscore_line(
     node_level: list[Node],
     pipe_line: str,
+    seed: int,
 ) -> str:
     """
     Args:
@@ -35,7 +36,7 @@ def get_underscore_line(
     Returns:
         (str): line to be printed out 
     """
-    chars: list[str] = [" "] * 400
+    chars: list[str] = [" "] * seed * 5
     pipe_indexes: list[int] = [index for index, val in enumerate(pipe_line) if val=="|"]
 
     for parent_node in node_level:
@@ -89,7 +90,7 @@ def get_pipe_indexes(parent_node: Node) -> list[int]:
             
         pipe_indexes = new_pipe_indexes
 
-def get_pipe_line(node_level: list[Node]) -> str:
+def get_pipe_line(node_level: list[Node], seed:int) -> str:
     """
     Args:
         node_level (list[Node]): list of parent nodes
@@ -98,7 +99,7 @@ def get_pipe_line(node_level: list[Node]) -> str:
         (str): pipe_line for child nodes of parent nodes in node_level
         eg. "          |         |          |        | "
     """
-    chars: list[str] = [" "] * 400
+    chars: list[str] = [" "] * seed * 5
 
     for parent_node in node_level:
     
