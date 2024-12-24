@@ -12,6 +12,13 @@ def pprint_tree(root: Node) -> None:
     """
     prints a tree (where nodes have multiple children) in human readable format
 
+    Example Node class definition:
+
+    class Node:
+        def __init__(self, val: Any):
+            self.val: Any = val
+            self.children: list[Node] = []
+
     Args:
         root (Node): root node of tree we want to print
     """
