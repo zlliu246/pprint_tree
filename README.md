@@ -9,27 +9,28 @@ pip install pprint_tree
 
 # Quickstart
 ```python
+from typing import Any
+
 class Node:
-    def __init__(self, val):
+    def __init__(self, val: Any):
         self.val = val
         self.children = []
 
-root = Node("apple")
-root.children.append(Node("orange"))
-root.children.append(Node("pear"))
-root.children.append(Node("pineapple"))
-root.children.append(Node("banana"))
-root.children[0].children.append(Node("orange1"))
-root.children[0].children.append(Node("orange2"))
-root.children[1].children.append(Node("pear1"))
-root.children[1].children[0].children.append(Node("pear2"))
-root.children[1].children[0].children[0].children.append(Node("pear3"))
-root.children[1].children[0].children[0].children.append(Node("pear4"))
-root.children[2].children.append(Node("kiwi"))
-root.children[2].children.append(Node("avocado"))
-root.children[2].children.append(Node("cherry tomatoes"))
-root.children[2].children.append(Node("golden kiwi"))
-root.children[2].children.append(Node("soup"))
+    def adopt(self, *val_list: list[Any]):
+        for val in val_list:
+            self.children.append(Node(val))
+
+    def __getitem__(self, index: int) -> "Node":
+        return self.children[index]
+    
+root = Node("root")
+root.adopt("apple", "orange", "pear", "pineapple")
+root[0].adopt("banana", "durian")
+root[1].adopt("juice")
+root[1][0].adopt("juice2")
+root[1][0][0].adopt("potato", "soup")
+root[2].adopt("kiwi", "avocado")
+root[2][1].adopt("cherry tomato", "soup")
 
 
 from pprint_tree import pprint_tree
@@ -37,14 +38,14 @@ from pprint_tree import pprint_tree
 pprint_tree(root)
 
 """
-            ____________________________________________apple__________________________________________
-            |                        |                                   |                            |
-    _____orange_______             pear           ___________________pineapple__________________   banana
-    |                |              |             |       |            |              |        |
-orange1          orange2         pear1          kiwi  avocado  cherry tomatoes  golden kiwi  soup
-                                   |
-                             ____pear2_______
-                             |              |
-                          pear3          pear4
+          _____________________________________root________________________________
+          |                       |                   |                           |
+   _____apple______             orange          _____pear_______________     pineapple
+   |              |               |             |                      |
+banana         durian           juice         kiwi          ________avocado__________
+                                  |                         |                       |
+                          _____juice2______          cherry tomato                soup
+                          |               |
+                       potato           soup
 """
 ```
